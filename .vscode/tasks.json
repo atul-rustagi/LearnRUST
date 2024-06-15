@@ -1,0 +1,47 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "cargo build",
+			"dependsOn": [
+				"cargo build main"
+			]
+		},
+		{
+			"label": "cargo build release",
+			"dependsOn": [
+				"cargo build main release"
+			]
+		},
+		{
+			"label": "cargo build main",
+			"type": "cargo",
+			"command": "build",
+			"args": [
+
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "build"
+		},
+		{
+			"label": "cargo build main release",
+			"type": "cargo",
+			"command": "build",
+			"args": [
+				"--release"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "build"
+		}
+	]
+}
