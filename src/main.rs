@@ -6,6 +6,8 @@
 
 #![allow (dead_code)]
 
+use std::collections::HashMap;
+
 fn add (num1: i32, num2: i32) -> i32
 {
     num1 + num2
@@ -184,7 +186,57 @@ fn advance_ds_vec ()
     println! ("done");
 }
 
+fn advance_ds_unordered_map ()
+{
+    let mut map = HashMap::new ();
+
+    map.insert ("a", 1);
+    map.insert ("b", 2);
+    map.insert ("c", 3);
+    map.insert ("d", 4);
+
+    println! ("map: {:?}, len: {}, capacity: {}", map, map.len (), map.capacity ());
+
+    map.remove ("d");
+    println! ("removed key: \"d\": {:?}", map);
+
+    if map.contains_key ("b") {
+
+        println! ("key: \"b\" is present: {}", map["b"]);
+    } else {
+
+        println! ("key: \"b\" is not present")
+    }
+
+    let key = map.keys ();
+    println! ("keys: {:?}", key);
+
+    let val = map.values ();
+    println! ("values: {:?}", val);
+
+    let result = map.get ("a");
+
+    match result {
+
+        Some (val) => println! ("value for \"a\": {}", val),
+
+        None => println! ("key \"a\" not found")
+    }
+
+    print! ("iterating on map:");
+
+    for (key, val) in map.iter () {
+
+        print! (" ({}, {})", key, val);
+    }
+
+    println! ();
+
+    map.clear ();
+    println! ("cleared map: {:?}", map);
+}
+
 fn main ()
 {
-    advance_ds_vec ();
+    advance_ds_unordered_map ();
 }
