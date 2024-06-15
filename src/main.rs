@@ -7,6 +7,7 @@
 #![allow (dead_code)]
 
 use std::collections::HashMap;
+//use std::cmp;         // used for functions like min, max
 
 fn add (num1: i32, num2: i32) -> i32
 {
@@ -81,6 +82,13 @@ fn basics ()
         print! ("{} ", n);
     }
 
+    // for loop in reverse
+
+    for n in (21..=25).rev () {
+
+        print! ("{} ", n);
+    }
+
     println! ();
 
     // printing for debugging, will print whole array is a formatted way
@@ -119,6 +127,12 @@ fn advance_ds_vec ()
     /*
     // alternative way
     let mut vec: Vec<i32> = vec! ();
+
+    // create vector of some size with some init value
+    let mut vec = vec![val; size];
+
+    // create vector with some capacity
+    let mut vec: Vec<i32> = Vec::with_capacity (capacity);
     */
 
     vec.push (10);
@@ -238,5 +252,5 @@ fn advance_ds_unordered_map ()
 
 fn main ()
 {
-    advance_ds_unordered_map ();
+    basics ();
 }
