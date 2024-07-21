@@ -1,5 +1,9 @@
 
-fn section_1 ()
+// Course link: https://www.udemy.com/course/rust-programming-the-complete-guide/?couponCode=IND21PM
+
+#[allow (dead_code)]
+
+fn section_2 ()
 {
     // tuple
     let tup = (500, "Atul", true);
@@ -61,7 +65,69 @@ fn section_1 ()
     }
 }
 
+// Section 3 helper functions
+
+fn takes_ownership (s: String)
+{
+    println! ("takes_ownership func, s: {}", s);
+}
+
+fn give_ownership () -> String
+{
+    "given".to_string ()
+}
+
+fn change_string (orig_str: &mut String)
+{
+    orig_str.push_str (" World!!");
+}
+
+fn section_3 ()
+{
+    // ownership
+    let x = "Atul".to_string ();
+    let a = 10;
+
+    // copy
+    let b = a;
+    println! ("a: {}, b: {}", a, b);
+
+    // move
+    let y = x;
+
+    //println! ("x: {}", x); // will not compile as value of x is moved to y and x no longer owns that value
+    println! ("y: {}", y);
+
+    // clone
+    let z = y.clone (); // this will do deep copy
+    println! ("y: {}, z: {}", y, z);
+
+    /*
+    datatypes which are on stack implements copy, whereas which are on heap implements move
+    tuple will implement copy if all of its elements implement copy
+    */
+
+    // move examples
+    let s = "takes".to_string ();
+
+    takes_ownership (s); // gives ownership of s to function
+
+    //println! ("s: {}", s); // will not compile as value of s is moved to "take_ownership" parameter
+
+    let t = give_ownership ();
+    println! ("t: {}", t);
+
+    // reference and borrowing
+    let mut str = "Hello".to_string ();
+
+    change_string (&mut str);
+
+    println! ("str: {}", str);
+}
+
 fn main ()
 {
-    section_1 ();
+    //section_2 ();
+
+    section_3 ();
 }
