@@ -131,6 +131,7 @@ fn section_3 ()
 // Section 4 helper things
 
 // named field struct
+#[allow (dead_code)]
 struct User {
     name: String,
     age: i32,
@@ -138,17 +139,20 @@ struct User {
 }
 
 // tuple struct
+#[allow (dead_code)]
 struct Coordinates (i32, i32, i32);
 
 // unit struct
 #[allow (dead_code)]
 struct UnitStruct;
 
+#[allow (dead_code)]
 struct Rectangle {
     width: i32,
     height: i32
 }
 
+#[allow (dead_code)]
 impl Rectangle {
     fn area (& self) -> i32
     {
@@ -161,6 +165,7 @@ impl Rectangle {
     }
 }
 
+#[allow (dead_code)]
 fn build_user (name: String, age: i32) -> User
 {
     User {
@@ -187,10 +192,12 @@ fn lifetime_example <'a, 'b> (_x: &'a str, y: &'b str) -> &'b str
 }
 
 // lifetime in structs
+#[allow (dead_code)]
 struct MyString <'a> {
     text: &'a str
 }
 
+#[allow (dead_code)]
 fn section_4 ()
 {
     // structs
@@ -238,11 +245,123 @@ fn section_4 ()
 
 }
 
+// Section 5 helper things
+
+// simple enum
+#[allow (dead_code)]
+enum Pet {
+    Dog,
+    Cat,
+    Fish
+}
+
+// implementing methods for enum
+#[allow (dead_code)]
+impl Pet {
+    fn what_am_i (self) -> &'static str {
+        match self {
+            Pet::Dog => "I am a dog",
+            Pet::Cat => "I am a cat",
+            Pet::Fish => "I am a fish"
+        }
+    }
+}
+
+#[allow (dead_code)]
+enum IpAddrKind {
+    V4 (String), // enum can have different types also
+    V6
+}
+
+#[allow (dead_code)]
+struct IpAddr {
+    kind: IpAddrKind,
+    address: String
+}
+
+#[allow (dead_code)]
+fn plus_one (x: Option <i32>) -> Option <i32>
+{
+    match x {
+        None => None,
+        Some (i) => Some (i + 1)
+    }
+}
+
+#[allow (dead_code)]
+fn section_5 ()
+{
+    // enum
+    let pet = Pet::Dog;
+
+    println! ("{}", pet.what_am_i ());
+
+    // enum with some type
+    let _home = IpAddrKind::V4 ("127.0.0.1".to_string ());
+
+    // enum inside struct
+    let _loopback = IpAddr {
+        kind: IpAddrKind::V6,
+        address: "::1".to_string ()
+    };
+
+    // option
+    let _some_num = Some (10);
+    let _some_str = Some ("a string");
+    let _nothing: Option<i32> = None;
+
+    // match
+    let five = Some (5);
+    let six = plus_one (five);
+    let none = plus_one (None);
+
+    println! ("six: {:?}, none: {:?}", six, none);
+
+    // if let
+    let another_pet = Some (Pet::Dog);
+    if let Some (Pet::Dog) = another_pet {
+        println! ("pet is a dog");
+    } else {
+        println! ("pet is not a dog");
+    }
+
+    // while let
+    let mut st = Vec::new ();
+
+    st.push (1);
+    st.push (2);
+    st.push (3);
+
+    while let Some (top) = st.pop () {
+        println! ("{}", top);
+    }
+
+    // more matches
+    let x = 10;
+
+    match x {
+        1 | 2 => println! ("x is either 1 or 2"),
+        3..=10 => println! ("x is in range 3 to 10"),
+        _ => println! ("anything else")
+    }
+
+    let y = Some (5);
+    let z = 10;
+
+    match y {
+        Some (15) => println! ("y is 15"),
+        Some (y) if y == z => println! ("y is 10"),
+        _ => println! ("default")
+    }
+}
+
 fn main ()
 {
     //section_2 ();
 
     //section_3 ();
 
-    section_4 ();
+    //section_4 ();
+
+    section_5 ();
 }
