@@ -458,4 +458,6 @@ fn main ()
     //section_5 ();
 
     //section_6 ();
+
+    //section 7 => cargo, crate, and modules => no programming but folder structuring, check secion 7 commit
 }
