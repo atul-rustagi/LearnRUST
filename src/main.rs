@@ -66,19 +66,16 @@ fn section_2 ()
 
 // Section 3 helper functions
 
-#[allow (dead_code)]
 fn takes_ownership (s: String)
 {
     println! ("takes_ownership func, s: {}", s);
 }
 
-#[allow (dead_code)]
 fn give_ownership () -> String
 {
     "given".to_string ()
 }
 
-#[allow (dead_code)]
 fn change_string (orig_str: &mut String)
 {
     orig_str.push_str (" World!!");
@@ -131,7 +128,6 @@ fn section_3 ()
 // Section 4 helper things
 
 // named field struct
-#[allow (dead_code)]
 struct User {
     name: String,
     age: i32,
@@ -139,20 +135,17 @@ struct User {
 }
 
 // tuple struct
-#[allow (dead_code)]
 struct Coordinates (i32, i32, i32);
 
 // unit struct
 #[allow (dead_code)]
 struct UnitStruct;
 
-#[allow (dead_code)]
 struct Rectangle {
     width: i32,
     height: i32
 }
 
-#[allow (dead_code)]
 impl Rectangle {
     fn area (& self) -> i32
     {
@@ -165,7 +158,6 @@ impl Rectangle {
     }
 }
 
-#[allow (dead_code)]
 fn build_user (name: String, age: i32) -> User
 {
     User {
@@ -192,7 +184,6 @@ fn lifetime_example <'a, 'b> (_x: &'a str, y: &'b str) -> &'b str
 }
 
 // lifetime in structs
-#[allow (dead_code)]
 struct MyString <'a> {
     text: &'a str
 }
@@ -256,7 +247,6 @@ enum Pet {
 }
 
 // implementing methods for enum
-#[allow (dead_code)]
 impl Pet {
     fn what_am_i (self) -> &'static str {
         match self {
@@ -279,7 +269,6 @@ struct IpAddr {
     address: String
 }
 
-#[allow (dead_code)]
 fn plus_one (x: Option <i32>) -> Option <i32>
 {
     match x {
@@ -355,6 +344,109 @@ fn section_5 ()
     }
 }
 
+// Section 6 helper things
+
+// generic struct
+#[derive (Debug)]
+struct Point <T, U> {
+    x: T,
+    y: U
+}
+
+// operator overloading
+use std::ops::Add;
+
+impl <T, U> Add for Point <T, U>
+    where
+    T: Add <Output = T>,
+    U: Add <Output = U> {
+        type Output = Self;
+        fn add (self, rhs: Self) -> Self::Output {
+            Point {
+                x: self.x + rhs.x,
+                y: self.y + rhs.y
+            }
+        }
+    }
+
+// trait
+trait Overview {
+    fn overview (&self) -> String {
+        "This is default implementation of Overview trait".to_string ()
+    }
+}
+
+struct Course {
+    title: String,
+    author: String
+}
+
+struct Book {
+    title: String,
+    author: String,
+    pages: i32
+}
+
+impl Overview for Course {
+    fn overview (&self) -> String { // if this implementation is removed then course.overview () will return from default implementation
+        format! ("{}, {}", self.title, self.author)
+    }
+}
+
+impl Overview for Book {
+    fn overview (&self) -> String {
+        format! ("{}, {}, {}", self.title, self.author, self.pages)
+    }
+}
+
+// passing trait as parameter
+//fn call_overview (item: &impl Overview) { // this will also work
+fn call_overview <T: Overview> (item: &T) {
+    println! ("call_overview: {}", item.overview ());
+}
+
+/*
+different trait patterns: ***Have to read them again, not able to understand***
+- fn call_overview (item1: &impl Overview, item2: &impl Overview)
+- fn call_overview <T: Overview> (item1: &T, item2: &T)
+- fn call_overview (item: &impl Overview + AnotherTrait)
+- fn call_overview <T: Overview + AnotherTrait> (item: &T)
+*/
+
+// drop trait
+impl Drop for Course {
+    fn drop (&mut self) {
+        println! ("Dropping Course: {}", self.title);
+    }
+}
+
+// "clone", "copy", "from", "into" trait not explained completely
+
+#[allow (dead_code)]
+fn section_6 ()
+{
+    let p1 = Point {x: 5.0, y: 10.0};
+    let _p2 = Point {x: "5.0", y: "10.0"};
+    let _p3 = Point {x: 'x', y: 10};
+    let p4 = Point {x: 1.0, y: 2.0};
+
+    let course = Course {title: "Rust Course".to_string (), author: "Atul".to_string ()};
+    let book = Book {title: "Dune".to_string (), author: "Frank Herbert".to_string (), pages: 500};
+
+    println! ("Course: {}", course.overview ());
+    println! ("Book: {}", book.overview ());
+
+    call_overview (&course);
+    call_overview (&book);
+
+    println! ("{}", Overview::overview (&course));
+
+    drop (course); // even if this is line is commented then also "Dropping Course: course name" will get print
+                   // this is because at then end of function section_6, course is getting dropped
+
+    println! ("Sum: {:?}", p1 + p4);
+}
+
 fn main ()
 {
     //section_2 ();
@@ -363,5 +455,7 @@ fn main ()
 
     //section_4 ();
 
-    section_5 ();
+    //section_5 ();
+
+    //section_6 ();
 }
