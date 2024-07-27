@@ -447,6 +447,75 @@ fn section_6 ()
     println! ("Sum: {:?}", p1 + p4);
 }
 
+// Section 9 helper things
+
+use std::fs::File;          // for file operations
+use std::fs::rename;        // for renaming the file
+use std::io::Error;         // Errors
+use std::io::ErrorKind;     // to identify error from error code
+
+#[allow (dead_code)]
+fn open_file () -> Result <File, Error>
+{
+    // `?` operator to extract the `Result<File, std::io::Error>` value, propagating a `Result::Err` value to the caller
+    let file = File::open ("target\\xyz.txt")?;
+
+    Ok (file)
+}
+
+#[allow (dead_code)]
+fn rename_file () -> Result <(), Error>
+{
+    let file = rename("target\\xyz.txt", "target\\pqr.txt")?;
+
+    Ok (file)
+}
+
+#[allow (dead_code)]
+fn section_9 ()
+{
+    /*
+    // invoke panic
+    // this will unwind the stack before exiting, whereas "abort" will not
+    panic! ("panicked here");
+    */
+
+    /*
+    let v = vec! [1, 2, 3];
+
+    println! ("v[10]: {}", v[10]); // index out of bound panic
+    */
+
+    let file = File::open ("target\\sample.txt");
+
+    let _file = match file {
+        Ok (f) => f,
+        Err (e) => match e.kind () {
+            ErrorKind::NotFound => match File::create ("target\\sample.txt") {
+                Ok (f) => f,
+                Err (_e) => panic! ("cannot create file")
+            }
+            _ => panic! ("it is some other error")
+        }
+    };
+
+    /*
+    // using unwrap
+    let file = File.open ("target\\sample.txt").unwrap (); // return file if Ok, panic if Err
+
+    // customize error msg
+    let file = File.open ("target\\sample.txt").expect ("error opening the file"); // will print out error msg during failure
+    */
+
+    // error propagation
+
+    // commenting as it will cause panic
+    //open_file ().unwrap ();
+
+    // commenting as it will cause panic
+    //rename_file ().unwrap ();
+}
+
 fn main ()
 {
     //section_2 ();
@@ -462,4 +531,6 @@ fn main ()
     //section 7 => cargo, crate, and modules => no programming but folder structuring, check secion 7 commit
 
     //section 8 => common collections => vectors, binary heap, maps, and sets => learn by using them
+
+    section_9 ();
 }
