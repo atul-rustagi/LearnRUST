@@ -532,5 +532,7 @@ fn main ()
 
     //section 8 => common collections => vectors, binary heap, maps, and sets => learn by using them
 
-    section_9 ();
+    //section_9 ();
+
+    //section 10 => testing => will explore it at then end, basics are very easy
 }
