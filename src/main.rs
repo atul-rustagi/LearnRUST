@@ -460,4 +460,6 @@ fn main ()
     //section_6 ();
 
     //section 7 => cargo, crate, and modules => no programming but folder structuring, check secion 7 commit
+
+    //section 8 => common collections => vectors, binary heap, maps, and sets => learn by using them
 }
