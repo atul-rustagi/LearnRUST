@@ -516,6 +516,194 @@ fn section_9 ()
     //rename_file ().unwrap ();
 }
 
+// Section 12 helper things
+
+#[derive (Debug)]
+struct City {
+    _name: String,
+    population: u64
+}
+
+#[allow (dead_code)]
+fn sort_cities (cities: &mut Vec<City>)
+{
+    cities.sort_by_key (sort_cities_helper);
+}
+
+#[allow (dead_code)]
+fn sort_cities_helper (city: &City) -> u64
+{
+    city.population
+}
+
+fn sort_cities_closure (cities: &mut Vec<City>)
+{
+    cities.sort_by_key (|p| p.population);
+}
+
+#[derive (Debug)]
+struct Item {
+    name: String
+}
+
+fn check_item (items: Vec<Item>, product: String) -> Vec<Item>
+{
+    items.into_iter ().filter (|i| i.name == product).collect ()
+}
+
+#[derive (Debug)]
+struct Range {
+    start: u32,
+    end: u32
+}
+
+impl Iterator for Range {
+    type Item = u32;
+
+    fn next (&mut self) -> Option<Self::Item> {
+
+        if self.start >= self.end {
+            return None;
+        }
+
+        let result = Some (self.start);
+
+        self.start += 1;
+
+        result
+    }
+}
+
+fn section_12 ()
+{
+    // Closures and Iterators
+
+    // closure are a function like construct that you can store in a variable
+
+    let a = City {_name: "A".to_string (), population: 100};
+    let b = City {_name: "B".to_string (), population: 57};
+    let c = City {_name: "C".to_string (), population: 140};
+    let d = City {_name: "D".to_string (), population: 15};
+    let e = City {_name: "E".to_string (), population: 70};
+
+    let mut cities = Vec::new ();
+
+    cities.push (a);
+    cities.push (b);
+    cities.push (c);
+    cities.push (d);
+    cities.push (e);
+
+    //sort_cities (&mut cities);
+
+    sort_cities_closure(&mut cities);
+
+    println! ("{:?}", cities);
+
+    let add_v1 = |x: i32| -> i32 {x + 1}; // with type explicitly specified
+    let add_v2 = |x| x + 1; // type identified by compiler
+
+    let x = 1;
+    println! ("x: {}", add_v1 (x));
+    println! ("x: {}", add_v2 (x));
+
+    let example = |v| v;
+
+    let str = example ("example".to_string ());
+    println! ("str: {}", str);
+
+    // below code will give compilation error
+    //let val = example (10); // once type is identified by compiler, it can't change
+
+    // Fn Traits: Fn, FnMut, FnOnce
+    // || drop (v); // FnOnce as it can be run only once
+    // |args| v.contains (args); // Fn as it can be run any number of times and not changing v
+    // |args| v.push (args); // FnMut as it can be run any number of times and it changes v
+
+    /*
+    // not able to run below code because of falcon crowd strike
+    let y = 5;
+    let add_y = |x| x + y;
+    let copy = add_y; // this is closure being copied
+    println! ("calling add_y (copy (10)): {}", add_y (copy (10)));
+
+    // below code will give compilation error
+    // note: closure cannot be moved more than once as it is not `Copy` due to moving the variable `y` out of its environment
+    // help: consider mutably borrowing `add_y`
+    let mut y = 5;
+    let mut add_y = |x| {y += x; y};
+    println! ("calling add_y(10): {}", add_y (10));
+    let mut copy = add_y;
+    println! ("calling add_y (copy (10): {}", add_y (copy (10)));
+    */
+
+    // Iterators
+
+    /*
+    pub trait Iterator {
+        type Item;
+        fn next (&mut self) -> Option <Self::Item>;
+        // other default methods
+    }
+    */
+
+    // https://stackoverflow.com/questions/34733811/what-is-the-difference-between-iter-and-into-iter
+
+    let vec_1 = vec![1, 2, 3];
+
+    for val in vec_1.iter () {
+        print! ("{}", val);
+    }
+
+    println! ("");
+
+    let vec_2 = vec![1, 2, 3];
+    let mut iter = vec_2.into_iter ();
+
+    while let Some (v) = iter.next () {
+        print! ("{}", v);
+    }
+
+    println! ("");
+
+    let mut items = Vec::new ();
+
+    items.push (Item {
+        name: "shirt".to_string ()
+    });
+
+    items.push (Item {
+        name: "coat".to_string ()
+    });
+
+    items.push (Item {
+        name: "shorts".to_string ()
+    });
+
+    items.push (Item {
+        name: "shoes".to_string ()
+    });
+
+    let checked = check_item (items, "shirt".to_string ());
+
+    println! ("shirts: {:?}", checked);
+
+    let range = Range {start: 0, end: 10};
+/*
+    // commented this as copy trait is not implemented for our Range struct
+    // so range is getting moved in for loop, so next use of range will be "used after move" compilation error
+    for r in range {
+        print! ("{}", r);
+    }
+
+    println! ("");
+*/
+
+    let even_val: Vec<u32> = range.filter (|x| x % 2 == 0).collect ();
+
+    println! ("even values: {:?}", even_val);
+}
+
 fn main ()
 {
     //section_2 ();
@@ -537,4 +725,6 @@ fn main ()
     //section 10 => testing => will explore it at then end, basics are very easy
 
     //section 11 => Find and Replace CLI Program => small coding assignment, do it at then end
+
+    section_12 ();
 }
