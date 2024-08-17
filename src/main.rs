@@ -574,6 +574,7 @@ impl Iterator for Range {
     }
 }
 
+#[allow (dead_code)]
 fn section_12 ()
 {
     // Closures and Iterators
@@ -704,6 +705,61 @@ fn section_12 ()
     println! ("even values: {:?}", even_val);
 }
 
+use std::rc::Rc;
+use std::cell::RefCell;
+
+struct Flagger {
+    is_true: Rc<RefCell <bool>>
+}
+
+#[allow (dead_code)]
+fn section_13 ()
+{
+    // Box and Dereferencing
+    let t = (12, "eggs"); // created on the stack
+
+    let b = Box::new (t); // created on the heap but b was stored on the stack
+
+    println! ("{:?}", b);
+
+    let x = 5;
+    let y = &x;
+    let z = Box::new (x);
+
+    assert_eq! (5, x);
+    assert_eq! (5, *y); // cannot compare integer with reference, so dereference before comparing
+    assert_eq! (5, *z);
+
+    println! ("{}", z);
+
+    // Rc and Arc, here Arc is nothing but thread safe Rc or Atomic Rc
+
+    let s1 = Rc::new ("pointer".to_string ());
+    let s2 = s1.clone (); // cloning does not copy the value, it creates another pointer and increases the reference count
+    let s3 = s2.clone ();
+
+    // methods of underlying objects can be directly used
+    println! ("s1 contains \"point\": {}, s2: {}, len of s3: {}", s1.contains ("point"), s2, s3.len ());
+
+    // RefCell
+    // it allows us to follow the interior mutability pattern
+    // it is a design pattern that allows us to mutate data even when they are immutable references to the data
+    // it is enforced at runtime so compiler will typically won't catch any errors for us
+
+    let flag = Flagger {is_true: Rc::new (RefCell::new (true))};
+
+    // borrow returns Ref <T>
+    // borrow_mut returns RefMut <T>
+
+    // only one can be borrowed either borrow or borrow_mut until we use Rc
+    let reference = flag.is_true.clone ();
+    println! ("flag.is_true.borrow (): {:?}", reference);
+
+    let mut mut_reference = flag.is_true.borrow_mut ();
+    *mut_reference = false; // dereference first to access
+    println! ("flag.is_true.borrow_mut (), changed true to false: {}", mut_reference);
+}
+
 fn main ()
 {
     //section_2 ();
@@ -726,5 +782,7 @@ fn main ()
 
     //section 11 => Find and Replace CLI Program => small coding assignment, do it at then end
 
-    section_12 ();
+    //section_12 ();
+
+    //section_13 ();
 }
