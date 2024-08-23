@@ -785,4 +785,9 @@ fn main ()
     //section_12 ();
 
     //section_13 ();
+
+    //section 14-19 => concurrency, macros, unsafe code, asynchronous rust, webassembly, big-O => will learn once comfortable with above topics
+
+    //section 20-28 => data structures and algorithms
+
 }
