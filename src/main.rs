@@ -760,6 +760,40 @@ fn section_13 ()
     println! ("flag.is_true.borrow_mut (), changed true to false: {}", mut_reference);
 }
 
+use data_structures::linked_list::List;
+
+fn linked_list ()
+{
+    let mut list = List::new ();
+
+    list.insert (50);
+    list.insert_as_first (40);
+    list.insert_as_last (60);
+
+    list.print ();
+    println! ("number of elements: {}", list.numelems ());
+
+    list.insert_as_first (30);
+    list.insert (70);
+
+    list.print ();
+    println! ("number of elements: {}", list.numelems ());
+
+    list.delete_first ();
+    list.delete_last ();
+
+    list.print ();
+    println! ("number of elements: {}", list.numelems ());
+
+    list.insert_as_first (30);
+    list.insert (70);
+
+    list.print ();
+    println! ("number of elements: {}", list.numelems ());
+
+    drop (list);
+}
+
 fn main ()
 {
     //section_2 ();
@@ -789,5 +823,7 @@ fn main ()
     //section 14-19 => concurrency, macros, unsafe code, asynchronous rust, webassembly, big-O => will learn once comfortable with above topics
 
     //section 20-28 => data structures and algorithms
+
+    linked_list ();
 
 }

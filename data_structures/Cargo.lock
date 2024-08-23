@@ -3,12 +3,5 @@
 version = 3
 
 [[package]]
-name = "LearnRUST"
-version = "0.1.0"
-dependencies = [
- "data_structures",
-]
-
-[[package]]
 name = "data_structures"
 version = "0.1.0"
