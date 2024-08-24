@@ -762,6 +762,7 @@ fn section_13 ()
 
 use data_structures::linked_list::List;
 
+#[allow (dead_code)]
 fn linked_list ()
 {
     let mut list = List::new ();
@@ -794,6 +795,20 @@ fn linked_list ()
     drop (list);
 }
 
+use algorithms::sorting::bubble_sort;
+
+#[allow (dead_code)]
+fn sorting ()
+{
+    let mut arr = vec![5, 4, 3, 2, 1];
+
+    println! ("Array before sort: {:?}", arr);
+
+    bubble_sort (&mut arr);
+
+    println! ("Array after sort: {:?}", arr);
+}
+
 fn main ()
 {
     //section_2 ();
@@ -824,6 +839,8 @@ fn main ()
 
     //section 20-28 => data structures and algorithms
 
-    linked_list ();
+    //linked_list ();
+
+    //sorting ();
 
 }

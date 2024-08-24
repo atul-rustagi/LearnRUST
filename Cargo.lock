@@ -6,8 +6,13 @@ version = 3
 name = "LearnRUST"
 version = "0.1.0"
 dependencies = [
+ "algorithms",
  "data_structures",
 ]
+
+[[package]]
+name = "algorithms"
+version = "0.1.0"
 
 [[package]]
 name = "data_structures"

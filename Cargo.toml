@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 data_structures = {path = "data_structures"}
+algorithms = {path = "algorithms"}
 
 [profile.release]
 debug = false
