@@ -809,6 +809,21 @@ fn sorting ()
     println! ("Array after sort: {:?}", arr);
 }
 
+// understanding recursion in rust
+#[allow (dead_code)]
+fn fibonacci (n: u32) -> u32
+{
+    if n == 0 {
+        return 0;
+    }
+
+    if n == 1 {
+        return 1;
+    }
+
+    fibonacci (n - 1) + fibonacci (n - 2)
+}
+
 fn main ()
 {
     //section_2 ();
@@ -842,5 +857,7 @@ fn main ()
     //linked_list ();
 
     //sorting ();
+
+    //println! ("fibonnaci (6) = {}", fibonacci (6));
 
 }
