@@ -52,10 +52,10 @@ impl <T> List <T> {
     {
         let node = Rc::new (RefCell::new (Node::new (val)));
 
-        if self.head.is_some () {
-            node.borrow_mut ().next = self.head.take ();
+        if let Some (first) = self.head.take () {
+            node.borrow_mut ().next = Some (first);
         } else {
-            self.head = Some (node.clone ());
+            self.tail = Some (node.clone ());
         }
 
         self.head = Some (node);
@@ -151,21 +151,164 @@ impl <T: std::fmt::Debug> List <T> {
 
 mod test {
     #[test]
-    fn basics () {
+    fn insert_first_delete_first ()
+    {
         use crate::linked_list::List;
 
         let mut list = List::new ();
 
-        list.insert (40);
+        list.insert_as_first (50);
+        list.insert_as_first (40);
         list.insert_as_first (30);
-        list.insert (50);
         list.insert_as_first (20);
-        list.insert_as_last (60);
         list.insert_as_first (10);
 
-        list.print ();
-        println! ("number of elements: {}", list.numelems ());
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
 
         drop (list);
+    }
+
+    #[test]
+    fn insert_last_delete_last ()
+    {
+        use crate::linked_list::List;
+
+        let mut list = List::new ();
+
+        list.insert_as_last (10);
+        list.insert_as_last (20);
+        list.insert_as_last (30);
+        list.insert_as_last (40);
+        list.insert_as_last (50);
+
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
+
+        drop (list);
+    }
+
+    #[test]
+    fn insert_first_delete_last ()
+    {
+        use crate::linked_list::List;
+
+        let mut list = List::new ();
+
+        list.insert_as_first (50);
+        list.insert_as_first (40);
+        list.insert_as_first (30);
+        list.insert_as_first (20);
+        list.insert_as_first (10);
+
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+        list.delete_last ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
+
+        drop (list);
+    }
+
+    #[test]
+    fn insert_last_delete_first ()
+    {
+        use crate::linked_list::List;
+
+        let mut list = List::new ();
+
+        list.insert_as_last (10);
+        list.insert_as_last (20);
+        list.insert_as_last (30);
+        list.insert_as_last (40);
+        list.insert_as_last (50);
+
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+        list.delete_first ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
+
+        drop (list);
+    }
+
+    #[test]
+    fn insert_delete ()
+    {
+        use crate::linked_list::List;
+
+        let mut list = List::new ();
+
+        list.insert_as_first (10);
+        list.insert_as_last (20);
+        list.insert_as_first (30);
+        list.insert_as_last (40);
+        list.insert_as_first (50);
+
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_first ();
+        list.delete_last ();
+        list.delete_first ();
+        list.delete_last ();
+        list.delete_first ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
+
+        list.insert_as_last (10);
+        list.insert_as_first (20);
+        list.insert_as_last (30);
+        list.insert_as_first (40);
+        list.insert_as_last (50);
+
+        assert_eq! (list.numelems (), 5);
+
+        list.delete_last ();
+        list.delete_first ();
+        list.delete_last ();
+        list.delete_first ();
+        list.delete_last ();
+
+        assert_eq! (list.numelems (), 0);
+
+        assert! (list.delete_first ().is_none ());
+        assert! (list.delete_last ().is_none ());
     }
 }
